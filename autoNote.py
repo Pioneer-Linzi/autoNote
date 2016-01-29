@@ -27,6 +27,8 @@ def getyear():
 def getmouth():
     mouth=time.strftime('%m',time.localtime(time.time()))
     return mouth
+    
+#获取昨天日记的路径
 def getyetPath():
     year=time.strftime('%Y',time.localtime(time.time()-60*60*24))
     mouth=time.strftime('%m',time.localtime(time.time()-60*60*24))
@@ -54,12 +56,14 @@ def getyesplan():
     for each in plan:
         str+=each
     return str
+    
+#替换计划任务为今日任务
 def replaceplan():
     result, number=re.subn('--begin--([\s\S]*?)--end--',getyesplan(),text)
     results,number=re.subn('==(.*?)==',gettimes(),result)
     print results
     return results
-
+#写入日志
 def writelog():
     path=PATH+getyear()+'/'+getmouth()+'/'+gettimes()+'.md'
     print(path)
