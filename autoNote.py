@@ -27,7 +27,7 @@ def getyear():
 def getmouth():
     mouth=time.strftime('%m',time.localtime(time.time()))
     return mouth
-    
+
 #获取昨天日记的路径
 def getyetPath():
     year=time.strftime('%Y',time.localtime(time.time()-60*60*24))
@@ -46,20 +46,46 @@ def mkdir():
         os.makedirs(path)
 mkdir()
 
+
+
+#取得昨天没成完的任务
+
+def getyesnoplan():
+    f=open(getyetPath(),'r')
+    yesnoplan=f.read()
+    f.close()
+    noplans=re.findall("--begin--([\s\S]*?)--end--",yesnoplan)
+    strs=''
+    for each in noplans:
+        strs+=each
+    str=''
+    noplan=re.findall("(....\+\ \[\]\ .*)",strs)
+    for each in noplan:
+        str+=(each+'\n')
+    print str
+    return str
+print '昨日未完成任务'
+print getyesnoplan()
 # 取得昨日的计划的函数
 def getyesplan():
     f=open(getyetPath(),'r')
     yesplan=f.read()
     f.close()
-    plan=re.findall("start--([\s\S]*?)--end",yesplan)
+    plan=re.findall("--start--([\s\S]*?)--ends--",yesplan)
     str=''
     for each in plan:
         str+=each
     return str
-    
+
 #替换计划任务为今日任务
 def replaceplan():
-    result, number=re.subn('--begin--([\s\S]*?)--end--',getyesplan(),text)
+    todayplan='--begin--\n'+'''#### 昨日未完成任务'''
+    todayplan+='\n'+getyesnoplan()
+    todayplan+='\n'+'''#### 今日任务'''+getyesplan()+'\n--end--\n'
+    print '****************************'
+    print todayplan
+    print '****************************'
+    result, number=re.subn('--begin--([\s\S]*?)--end--',todayplan,text)
     results,number=re.subn('==(.*?)==',gettimes(),result)
     print results
     return results
@@ -80,4 +106,8 @@ def isexists():
     else:
         writelog()
         return "今日日志成功的创建了，请到"+path+"查看当天日志"
+
+
+# 在这里加一个昨日任务没有完成的，自动的添加到明日任务中
+
 print isexists()
