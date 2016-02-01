@@ -17,27 +17,25 @@ f=open("/home/linzi/note/log/template/logTemp.md")
 text=f.read()
 
 f.close()
-# 取得当前时间的函数
-def gettimes():
-    timestr=time.strftime('%Y-%m-%d',time.localtime(time.time()))
-    return timestr
-def getyear():
-    year=time.strftime('%Y',time.localtime(time.time()))
-    return year
-def getmouth():
-    mouth=time.strftime('%m',time.localtime(time.time()))
-    return mouth
+## 对获取时间的代码重构
+def getTimes(timeX):
+    timestr=time.strftime('%Y-%m-%d',time.localtime(time.time()+60*60*24*timeX))
+    year=time.strftime('%Y',time.localtime(time.time()+60*60*24*timeX))
+    mouth=time.strftime('%m',time.localtime(time.time()+60*60*24*timeX))
+    return year,mouth,timestr
 
-#获取昨天日记的路径
-def getyetPath():
-    year=time.strftime('%Y',time.localtime(time.time()-60*60*24))
-    mouth=time.strftime('%m',time.localtime(time.time()-60*60*24))
-    timestr=time.strftime('%Y-%m-%d',time.localtime(time.time()-60*60*24))
+# 对获取路径的代码重构
+
+def getPath(pathX):
+    year,mouth,timestr=getTimes(pathX)
     path=PATH+year+'/'+mouth+'/'+timestr+'.md'
-    return path
+    mouthPath=PATH+year+'/'+mouth
+    return path,mouthPath
+
+
 # 对目录是否要创建的定
 def mkdir():
-    path=PATH+getyear()+'/'+getmouth()
+    filepath,path=getPath(0)
     print path
     if os.path.exists(path):
         print "目录存在"
@@ -46,12 +44,20 @@ def mkdir():
         os.makedirs(path)
 mkdir()
 
-
-
 #取得昨天没成完的任务
+def getyesPath():
+    pathX=-1
+    path,mouthPath=getPath(pathX)
+    while(not(os.path.exists(path))):
+        pathX-=1
+        print pathX
+        path,mouthPath=getPath(pathX)
+    print path
+    return path
 
 def getyesnoplan():
-    f=open(getyetPath(),'r')
+    path=getyesPath()
+    f=open(path,'r')
     yesnoplan=f.read()
     f.close()
     noplans=re.findall("--begin--([\s\S]*?)--end--",yesnoplan)
@@ -64,11 +70,9 @@ def getyesnoplan():
         str+=(each+'\n')
     print str
     return str
-print '昨日未完成任务'
-print getyesnoplan()
 # 取得昨日的计划的函数
 def getyesplan():
-    f=open(getyetPath(),'r')
+    f=open(getyesPath(),'r')
     yesplan=f.read()
     f.close()
     plan=re.findall("--start--([\s\S]*?)--ends--",yesplan)
@@ -79,20 +83,16 @@ def getyesplan():
 
 #替换计划任务为今日任务
 def replaceplan():
+    year,mouth,timestr=getTimes(0)
     todayplan='--begin--\n'+'''#### 昨日未完成任务'''
     todayplan+='\n'+getyesnoplan()
-    todayplan+='\n'+'''#### 今日任务'''+getyesplan()+'\n--end--\n'
-    print '****************************'
-    print todayplan
-    print '****************************'
+    todayplan+='\n'+'''#### 今日任务'''+getyesplan()+'\n\t--end--\n'
     result, number=re.subn('--begin--([\s\S]*?)--end--',todayplan,text)
-    results,number=re.subn('==(.*?)==',gettimes(),result)
-    print results
+    results,number=re.subn('==(.*?)==',timestr,result)
     return results
 #写入日志
 def writelog():
-    path=PATH+getyear()+'/'+getmouth()+'/'+gettimes()+'.md'
-    print(path)
+    path,mouthPath=getPath(0)
     f=open(path,"w")
     f.write(replaceplan())
     f.close()
@@ -100,7 +100,7 @@ def writelog():
 print getyesplan()
 # 替换明日计划
 def isexists():
-    path=PATH+getyear()+'/'+getmouth()+'/'+gettimes()+'.md'
+    path,mouthPath=getPath(0)
     if os.path.exists(path):
         return "今天的日志已经有了，请去"+path+"查看当天日志"
     else:

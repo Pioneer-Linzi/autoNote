@@ -1,15 +1,20 @@
 #!/bin/bash
 
-python autoNote.py
 
 cd /home/linzi/note/
 
 git pull origin master
 
+cd /home/linzi/github/autoNote/
+python autoNote.py
+
+cd /home/linzi/note/
 git add -A
 
+cd /home/linzi/note/
 git commit -m'add note'
 
+cd /home/linzi/note/
 git push origin master
 
 year=`date -d now +%Y`
