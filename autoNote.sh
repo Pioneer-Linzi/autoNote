@@ -1,20 +1,20 @@
 #!/bin/bash
 
 
-cd /home/linzi/note/
+cd /home/larry/note/
 
 git pull origin master
 
-cd /home/linzi/github/autoNote/
+cd /home/larry/github/autoNote/
 python autoNote.py
 
-cd /home/linzi/note/
+cd /home/larry/note/
 git add -A
 
-cd /home/linzi/note/
+cd /home/larry/note/
 git commit -m'add note'
 
-cd /home/linzi/note/
+cd /home/larry/note/
 git push origin master
 
 year=`date -d now +%Y`
