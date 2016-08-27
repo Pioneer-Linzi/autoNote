@@ -1,4 +1,4 @@
 #!/bin/bash
-cd /home/larry/github/autoNote
+cd ~/note/autoNote
 
-sh autoNote.sh >>/home/larry/github/log.md
+sh autoNote.sh >> ~/note/log.md

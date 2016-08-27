@@ -10,10 +10,10 @@
 import time
 import os
 import re
-PATH="/home/larry/note/log/"
+PATH="/home/linzi/note/mynote/log/"
 
 #取得模板
-f=open("/home/larry/note/log/template/logTemp.md")
+f=open("/home/linzi/note/mynote/log/template/logTemp.md")
 text=f.read()
 
 f.close()
@@ -36,11 +36,11 @@ def getPath(pathX):
 # 对目录是否要创建的定
 def mkdir():
     filepath,path=getPath(0)
-    print path
+    print(path)
     if os.path.exists(path):
-        print "目录存在"
+        print("目录存在")
     else:
-        print "目录不存在,正在创建目录。。。。。。。"
+        print("目录不存在,正在创建目录。。。。。。。")
         os.makedirs(path)
 mkdir()
 
@@ -50,9 +50,9 @@ def getyesPath():
     path,mouthPath=getPath(pathX)
     while(not(os.path.exists(path))):
         pathX-=1
-        print pathX
+        print (pathX)
         path,mouthPath=getPath(pathX)
-    print path
+    print (path)
     return path
 
 def getyesnoplan():
@@ -68,7 +68,7 @@ def getyesnoplan():
     noplan=re.findall("(....\+\ \[\]\ .*)",strs)
     for each in noplan:
         str+=(each+'\n')
-    print str
+    print (str)
     return str
 # 取得昨日的计划的函数
 def getyesplan():
@@ -97,7 +97,7 @@ def writelog():
     f.write(replaceplan())
     f.close()
 
-print getyesplan()
+print(getyesplan())
 # 替换明日计划
 def isexists():
     path,mouthPath=getPath(0)
@@ -110,4 +110,4 @@ def isexists():
 
 # 在这里加一个昨日任务没有完成的，自动的添加到明日任务中
 
-print isexists()
+print(isexists())
