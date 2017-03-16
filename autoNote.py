@@ -19,9 +19,9 @@ text=f.read()
 f.close()
 ## 对获取时间的代码重构
 def getTimes(timeX):
-    timestr=time.strftime('%Y-%m-%d',time.localtime(time.time()+60*60*24*timeX))
-    year=time.strftime('%Y',time.localtime(time.time()+60*60*24*timeX))
-    mouth=time.strftime('%m',time.localtime(time.time()+60*60*24*timeX))
+    timestr=time.strftime('%Y-%m-%d',time.localtime(time.time()+12*60*60+60*60*24*timeX))
+    year=time.strftime('%Y',time.localtime(time.time()+12*60*60+60*60*24*timeX))
+    mouth=time.strftime('%m',time.localtime(time.time()+12*60*60+60*60*24*timeX))
     return year,mouth,timestr
 
 # 对获取路径的代码重构
