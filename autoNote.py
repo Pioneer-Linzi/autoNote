@@ -10,10 +10,10 @@
 import time
 import os
 import re
-PATH="/home/linzi/note/mynote/log/"
+PATH="/root/note/mynote/log/"
 
 #取得模板
-f=open("/home/linzi/note/mynote/log/template/logTemp.md")
+f=open("/root/note/mynote/log/template/logTemp.md")
 text=f.read()
 
 f.close()
