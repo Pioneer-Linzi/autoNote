@@ -17,11 +17,10 @@ git commit -m'add note'
 cd ~/note/mynote
 git push origin master
 
-year=`date -d now +%Y`
-mouth=`date -d now +%m`
-day=`date -d now +%d`
-time=`date -d now +%Y-%m-%d`
-
-google-chrome https://github.com/Pioneer-Linzi/mynote/tree/master/log/${year}/${mouth}/${time}.md
+year=`date +%Y`
+mouth=`date  +%m`
+day=`date  +%d`
+time=`date +%Y-%m-%d`
+open -a Google\ Chrome https://github.com/Pioneer-Linzi/mynote/tree/master/log/${year}/${mouth}/${time}.md
 
 
